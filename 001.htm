@@ -39,11 +39,16 @@
                     <tr>
                         <th>選取</th>
                         <th>姓名</th>
-                        <th contenteditable="true" @input="updateHeader($event, '7月1日')">7月1日 <button class="btn btn-sm btn-primary" @click="resetColumn('7月1日')">歸零</button></th>
-                        <th contenteditable="true" @input="updateHeader($event, '7月8日')">7月8日 <button class="btn btn-sm btn-primary" @click="resetColumn('7月8日')">歸零</button></th>
-                        <th contenteditable="true" @input="updateHeader($event, '7月15日')">7月15日 <button class="btn btn-sm btn-primary" @click="resetColumn('7月15日')">歸零</button></th>
-                        <th contenteditable="true" @input="updateHeader($event, '7月22日')">7月22日 <button class="btn btn-sm btn-primary" @click="resetColumn('7月22日')">歸零</button></th>
-                        <th contenteditable="true" @input="updateHeader($event, '7月29日')">7月29日 <button class="btn btn-sm btn-primary" @click="resetColumn('7月29日')">歸零</button></th>
+                        <th contenteditable="true" @input="updateHeader($event, '7月1日')">8月5日 <button class="btn btn-sm btn-primary"
+                                @click="resetColumn('7月1日')">歸零</button></th>
+                        <th contenteditable="true" @input="updateHeader($event, '7月8日')">8月12日 <button class="btn btn-sm btn-primary"
+                                @click="resetColumn('7月8日')">歸零</button></th>
+                        <th contenteditable="true" @input="updateHeader($event, '7月15日')">8月19日 <button class="btn btn-sm btn-primary"
+                                @click="resetColumn('7月15日')">歸零</button></th>
+                        <th contenteditable="true" @input="updateHeader($event, '7月22日')">8月26日 <button class="btn btn-sm btn-primary"
+                                @click="resetColumn('7月22日')">歸零</button></th>
+                        <th contenteditable="true" @input="updateHeader($event, '7月29日')">9月2日 <button class="btn btn-sm btn-primary"
+                                @click="resetColumn('7月29日')">歸零</button></th>
                         <th>總計</th>
                         <th>操作</th>
                     </tr>
@@ -133,15 +138,17 @@
 
         setup() {
             const tableData = reactive(loadTableData());
-        const headers = reactive(loadHeaders());
+            const headers = reactive(loadHeaders());
 
-        watch(tableData, (newData) => {
-            localStorage.setItem('tableData', JSON.stringify(newData));
-        }, { deep: true });
+            watch(tableData, (newData) => {
+                localStorage.setItem('tableData', JSON.stringify(newData));
+            }, { deep: true });
 
         watch(headers, (newHeaders) => {
             localStorage.setItem('headers', JSON.stringify(newHeaders));
         }, { deep: true });
+
+
 
         const rowTotal = (row) => {
             return row['7月1日'] + row['7月8日'] + row['7月15日'] + row['7月22日'] + row['7月29日'];
