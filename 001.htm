@@ -7,19 +7,91 @@
     <link rel="shortcut icon" href="#" />
     <title>🦝</title>
     <style>
-    @import url(https://fonts.googleapis.com/earlyaccess/notosanstc.css);
-      *{ font-family:'Noto Sans TC','微軟正黑體'; }
-      *,*::before,*::after{ margin:0px; padding:0px; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box; }
-      .clearfix:after{ content:''; display:block; height:0; clear:both; visibility:hidden; }
-      hr{ margin:20px 0px; }
-      pre{ border:2px solid deeppink; padding:5px; margin:2px; font-size:12px; background:rgba(255,255,255,0.7); clear:both; font-size:12px; font-family:'Source Code Pro'; }
-      pre strong{ color:#c00; }
-      pre em{ font-style:normal; font-weight:bold; color:#006600; }
-      *[class^=btn]{ padding:5px 10px; margin:3px; background-color:gold; border-radius:4px; border:2px solid #333; }
-      .wrapper{ width:100%; max-width:1200px; margin:0 auto; border:2px solid #333; }
-      .editable{ cursor:pointer; }
-      .highlight{ background-color:yellow !important; }
-      .fixed-bottom-left{ position:fixed; bottom:20px; left:0px; }
+        @import url(https://fonts.googleapis.com/earlyaccess/notosanstc.css);
+
+        * {
+            font-family: 'Noto Sans TC', '微軟正黑體';
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0px;
+            padding: 0px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .clearfix:after {
+            content: '';
+            display: block;
+            height: 0;
+            clear: both;
+            visibility: hidden;
+        }
+
+        hr {
+            margin: 20px 0px;
+        }
+
+        pre {
+            border: 2px solid deeppink;
+            padding: 5px;
+            margin: 2px;
+            font-size: 12px;
+            background: rgba(255, 255, 255, 0.7);
+            clear: both;
+            font-size: 12px;
+            font-family: 'Source Code Pro';
+        }
+
+        pre strong {
+            color: #c00;
+        }
+
+        pre em {
+            font-style: normal;
+            font-weight: bold;
+            color: #006600;
+        }
+
+        *[class^=btn] {
+            padding: 5px 10px;
+            margin: 3px;
+            background-color: gold;
+            border-radius: 4px;
+            border: 2px solid #333;
+        }
+
+        p {
+            margin-bottom: 0 !important;
+        }
+
+        .wrapper {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            border: 2px solid #333;
+        }
+
+        .editable {
+            cursor: pointer;
+        }
+
+        .highlight {
+            background-color: yellow !important;
+        }
+
+        .fixed-bottom-left {
+            position: fixed;
+            bottom: 20px;
+            left: 0px;
+        }
+
+        input[type="text"] {
+            width: 80px;
+        }
     </style>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -31,24 +103,40 @@
 
 <body>
     <div id="app">
-       
+
         <div class="container mt-5">
             <button class="btn btn-success mb-3" @click="addRow">新增姓名</button>
+            <button class="btn btn btn-secondary mb-3" @click="toggleEdit">{{ buttonText }}</button>
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th>已繳錢</th>
                         <th>姓名</th>
-                        <th contenteditable="true" @input="updateHeader($event, '8月5日')">8月5日 <button class="btn btn-sm btn-primary"
-                                @click="resetColumn('7月1日')">歸零</button></th>
-                        <th contenteditable="true" @input="updateHeader($event, '8月12日')">8月12日 <button class="btn btn-sm btn-primary"
-                                @click="resetColumn('7月8日')">歸零</button></th>
-                        <th contenteditable="true" @input="updateHeader($event, '8月19日')">8月19日 <button class="btn btn-sm btn-primary"
-                                @click="resetColumn('7月15日')">歸零</button></th>
-                        <th contenteditable="true" @input="updateHeader($event, '8月26日')">8月26日 <button class="btn btn-sm btn-primary"
-                                @click="resetColumn('7月22日')">歸零</button></th>
-                        <th contenteditable="true" @input="updateHeader($event, '9月2日')">9月2日 <button class="btn btn-sm btn-primary"
-                                @click="resetColumn('7月29日')">歸零</button></th>
+                        <th>
+                            <input type="text" v-if="isEditing" v-model="headers.week1" class="form-control mt-2">
+                            <p v-else>{{ headers.week1 }}</p>
+                            <button class="btn btn-sm btn-primary" @click="resetColumn('week1')">歸零</button>
+                        </th>
+                        <th>
+                            <input type="text" v-if="isEditing" v-model="headers.week2" class="form-control mt-2">
+                            <p v-else>{{ headers.week2 }}</p>
+                            <button class="btn btn-sm btn-primary" @click="resetColumn('week2')">歸零</button>
+                        </th>
+                        <th>
+                            <input type="text" v-if="isEditing" v-model="headers.week3" class="form-control mt-2">
+                            <p v-else>{{ headers.week3 }}</p>
+                            <button class="btn btn-sm btn-primary" @click="resetColumn('week3')">歸零</button>
+                        </th>
+                        <th>
+                            <input type="text" v-if="isEditing" v-model="headers.week4" class="form-control mt-2">
+                            <p v-else>{{ headers.week4 }}</p>
+                            <button class="btn btn-sm btn-primary" @click="resetColumn('week4')">歸零</button>
+                        </th>
+                        <th>
+                            <input type="text" v-if="isEditing" v-model="headers.week5" class="form-control mt-2">
+                            <p v-else>{{ headers.week5 }}</p>
+                            <button class="btn btn-sm btn-primary" @click="resetColumn('week5')">歸零</button>
+                        </th>
                         <th>總計</th>
                         <th>操作</th>
                     </tr>
@@ -57,11 +145,16 @@
                     <tr v-for="(row, index) in tableData" :key="index" :class="{ 'highlight': row.highlighted }">
                         <td><input type="checkbox" v-model="row.highlighted"></td>
                         <td contenteditable="true" @input="updateCell($event, index, 'name')">{{ row.name }}</td>
-                        <td contenteditable="true" @input="updateCell($event, index, '7月1日')">{{ row['7月1日'] }}</td>
-                        <td contenteditable="true" @input="updateCell($event, index, '7月8日')">{{ row['7月8日'] }}</td>
-                        <td contenteditable="true" @input="updateCell($event, index, '7月15日')">{{ row['7月15日'] }}</td>
-                        <td contenteditable="true" @input="updateCell($event, index, '7月22日')">{{ row['7月22日'] }}</td>
-                        <td contenteditable="true" @input="updateCell($event, index, '7月29日')">{{ row['7月29日'] }}</td>
+                        <td contenteditable="true" @input="updateCell($event, index, 'week1')">{{ row['week1'] || 0}}
+                        </td>
+                        <td contenteditable="true" @input="updateCell($event, index, 'week2')">{{ row['week2'] || 0 }}
+                        </td>
+                        <td contenteditable="true" @input="updateCell($event, index, 'week3')">{{ row['week3'] || 0}}
+                        </td>
+                        <td contenteditable="true" @input="updateCell($event, index, 'week4')">{{ row['week4'] || 0}}
+                        </td>
+                        <td contenteditable="true" @input="updateCell($event, index, 'week5')">{{ row['week5'] || 0}}
+                        </td>
                         <td>{{ rowTotal(row) }}</td>
                         <td>
                             <button class="btn btn-danger btn-sm" @click="deleteRow(index)">刪除</button>
@@ -70,13 +163,13 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td></td> <!-- 新增的選取欄位 -->
+                        <td></td>
                         <td>總計:</td>
-                        <td>{{ columnTotal('7月1日') }}</td>
-                        <td>{{ columnTotal('7月8日') }}</td>
-                        <td>{{ columnTotal('7月15日') }}</td>
-                        <td>{{ columnTotal('7月22日') }}</td>
-                        <td>{{ columnTotal('7月29日') }}</td>
+                        <td>{{ columnTotal('week1') }}</td>
+                        <td>{{ columnTotal('week2') }}</td>
+                        <td>{{ columnTotal('week3') }}</td>
+                        <td>{{ columnTotal('week4') }}</td>
+                        <td>{{ columnTotal('week5') }}</td>
                         <td></td>
                     </tr>
                 </tfoot>
@@ -84,7 +177,7 @@
         </div>
 
         <div class="fixed-bottom-left">
-        
+
             <div class="card">
                 <div class="card-body">
                     <p class="card-text">每周出席人数</p>
@@ -98,113 +191,122 @@
                     </ul>
                 </div>
             </div>
-        
+
         </div>
     </div>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script>
 
-    const { reactive, watch, computed } = Vue;
-
-    const loadHeaders = () => {
-        return JSON.parse(localStorage.getItem('headers')) || {
-            '7月1日': '7月1日',
-            '7月8日': '7月8日',
-            '7月15日': '7月15日',
-            '7月22日': '7月22日',
-            '7月29日': '7月29日'
-        };
-    };
-
-    const loadTableData = () => {
-    return JSON.parse(localStorage.getItem('tableData')) || [
-        { name: '良瑋', '7月1日': 0, '7月8日': 0, '7月15日': 0, '7月22日': 0, '7月29日': 0 },
-        { name: '蓮華', '7月1日': 0, '7月8日': 0, '7月15日': 0, '7月22日': 0, '7月29日': 0 },
-        { name: '耀鴻', '7月1日': 0, '7月8日': 0, '7月15日': 0, '7月22日': 0, '7月29日': 0 },
-        { name: '兆祥', '7月1日': 0, '7月8日': 0, '7月15日': 0, '7月22日': 0, '7月29日': 0 },
-        { name: '柳丁', '7月1日': 0, '7月8日': 0, '7月15日': 0, '7月22日': 0, '7月29日': 0 },
-        { name: '正忠', '7月1日': 0, '7月8日': 0, '7月15日': 0, '7月22日': 0, '7月29日': 0 },
-        { name: '銘全', '7月1日': 0, '7月8日': 0, '7月15日': 0, '7月22日': 0, '7月29日': 0 },
-        { name: '阿葳', '7月1日': 0, '7月8日': 0, '7月15日': 0, '7月22日': 0, '7月29日': 0 },
-        { name: '志誠', '7月1日': 0, '7月8日': 0, '7月15日': 0, '7月22日': 0, '7月29日': 0 },
-        { name: '曜任', '7月1日': 0, '7月8日': 0, '7月15日': 0, '7月22日': 0, '7月29日': 0 },
-        { name: 'jerome', '7月1日': 0, '7月8日': 0, '7月15日': 0, '7月22日': 0, '7月29日': 0 },
-        { name: '冠宇', '7月1日': 0, '7月8日': 0, '7月15日': 0, '7月22日': 0, '7月29日': 0 },
-        
-    ];
-};
-
-    const app = Vue.createApp({
-
-        setup() {
-            const tableData = reactive(loadTableData());
-            const headers = reactive(loadHeaders());
-
-            watch(tableData, (newData) => {
-                localStorage.setItem('tableData', JSON.stringify(newData));
-            }, { deep: true });
-
-        watch(headers, (newHeaders) => {
-            localStorage.setItem('headers', JSON.stringify(newHeaders));
-        }, { deep: true });
+        const { createApp, ref, reactive, watch, computed, onMounted } = Vue;
 
 
-
-        const rowTotal = (row) => {
-            return row['7月1日'] + row['7月8日'] + row['7月15日'] + row['7月22日'] + row['7月29日'];
+        //原始資料
+        const loadTableData = () => {
+            return JSON.parse(localStorage.getItem('tableData')) || [
+                { name: '良瑋', 'week1': 0, 'week2': 0, 'week3': 0, 'week4': 0, 'week5': 0 },
+                { name: '蓮華', 'week1': 0, 'week2': 0, 'week3': 0, 'week4': 0, 'week5': 0 },
+                { name: '耀鴻', 'week1': 0, 'week2': 0, 'week3': 0, 'week4': 0, 'week5': 0 },
+                { name: '兆祥', 'week1': 0, 'week2': 0, 'week3': 0, 'week4': 0, 'week5': 0 },
+                { name: '柳丁', 'week1': 0, 'week2': 0, 'week3': 0, 'week4': 0, 'week5': 0 },
+                { name: '正忠', 'week1': 0, 'week2': 0, 'week3': 0, 'week4': 0, 'week5': 0 },
+                { name: '阿葳', 'week1': 0, 'week2': 0, 'week3': 0, 'week4': 0, 'week5': 0 },
+                { name: '志誠', 'week1': 0, 'week2': 0, 'week3': 0, 'week4': 0, 'week5': 0 },
+                { name: '曜任', 'week1': 0, 'week2': 0, 'week3': 0, 'week4': 0, 'week5': 0 },
+                { name: '冠宇', 'week1': 0, 'week2': 0, 'week3': 0, 'week4': 0, 'week5': 0 },
+            ];
         };
 
-        const columnTotal = (column) => {
-            return tableData.reduce((sum, row) => sum + row[column], 0);
-        };
+        const app = Vue.createApp({
 
-        const overallTotal = computed(() => {
-            return tableData.reduce((sum, row) => sum + rowTotal(row), 0);
-        });
-
-
-            const resetColumn = (column) => {
-                tableData.forEach(row => {
-                    row[column] = 0;
+            setup() {
+                const tableData = reactive(loadTableData());
+                const headers = reactive({
+                    week1: '8月5日',
+                    week2: '8月12日',
+                    week3: '8月19日',
+                    week4: '8月26日',
+                    week5: '9月2日'
                 });
-            };
 
-            const addRow = () => {
-                tableData.push({ name: '新姓名', '7月1日': 0, '7月8日': 0, '7月15日': 0, '7月22日': 0, '7月29日': 0 });
-            };
 
-            const deleteRow = (index) => {
-                tableData.splice(index, 1);
-            };
-
-            const updateCell = (event, index, column) => {
-                const value = event.target.innerText;
-                if (column === 'name') {
-                    tableData[index][column] = value;
-                } else {
-                    tableData[index][column] = parseInt(value) || 0;
+                // 初始化時從 localStorage 加載 headers
+                const savedHeaders = JSON.parse(localStorage.getItem('headers'));
+                if (savedHeaders) {
+                    Object.assign(headers, savedHeaders);
                 }
-            };
 
-            const updateHeader = (event, key) => {
-                headers[key] = event.target.innerText;
-            };
+                // 監聽 headers 的變化並儲存到 localStorage
+                watch(headers, (newHeaders) => {
+                    localStorage.setItem('headers', JSON.stringify(newHeaders));
+                }, { deep: true });
 
-            return {
-                tableData,
-                headers,
-                rowTotal,
-                columnTotal,
-                overallTotal,
-                resetColumn,
-                addRow,
-                deleteRow,
-                updateCell,
-                updateHeader
-            };
-        }
-    }).mount('#app');
-</script>
+                //連動 要不要顯示
+                const isEditing = ref(false);
+
+                const toggleEdit = () => {
+                    isEditing.value = !isEditing.value;
+                };
+                //按鈕文字
+                const buttonText = computed(() => {
+                    return isEditing.value ? "儲存" : "修改日期";
+                });
+
+                //計算總和
+                const rowTotal = (row) => {
+                    return row['week1'] + row['week2'] + row['week3'] + row['week4'] + row['week5'];
+                };
+
+                //計算欄位總和
+                const columnTotal = (column) => {
+                    return tableData.reduce((sum, row) => sum + row[column], 0);
+                };
+                //計算總和
+                const overallTotal = computed(() => {
+                    return tableData.reduce((sum, row) => sum + rowTotal(row), 0);
+                });
+
+                //歸零
+                const resetColumn = (column) => {
+                    tableData.forEach(row => {
+                        row[column] = 0;
+                    });
+                };
+                //新增欄位
+                const addRow = () => {
+                    tableData.push({ name: '新姓名', 'week1': 0, 'week2': 0, 'week3': 0, 'week4': 0, 'week5': 0 });
+                };
+                //刪除欄位
+                const deleteRow = (index) => {
+                    tableData.splice(index, 1);
+                };
+
+                //更新 金額欄位
+                const updateCell = (event, index, column) => {
+                    const value = event.target.innerText;
+                    if (column === 'name') {
+                        tableData[index][column] = value;
+                    } else {
+                        tableData[index][column] = parseInt(value) || 0;
+                    }
+                };
+
+                return {
+                    tableData,
+                    headers,
+                    rowTotal,
+                    columnTotal,
+                    overallTotal,
+                    resetColumn,
+                    addRow,
+                    deleteRow,
+                    updateCell,
+                    isEditing,
+                    toggleEdit,
+                    buttonText
+                };
+            }
+        }).mount('#app');
+    </script>
 </body>
 
 </html>
