@@ -93,7 +93,9 @@
             width: 100px;
         }
     </style>
+    <!-- css -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- js -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -240,6 +242,11 @@
                     localStorage.setItem('headers', JSON.stringify(newHeaders));
                 }, { deep: true });
 
+                // 監聽 tableData 的變化並儲存到 localStorage
+                watch(tableData, (newTableData) => {
+                    localStorage.setItem('tableData', JSON.stringify(newTableData));
+                });
+
                 //連動 要不要顯示
                 const isEditing = ref(false);
 
@@ -260,6 +267,7 @@
                 const columnTotal = (column) => {
                     return tableData.reduce((sum, row) => sum + row[column], 0);
                 };
+
                 //計算總和
                 const overallTotal = computed(() => {
                     return tableData.reduce((sum, row) => sum + rowTotal(row), 0);
