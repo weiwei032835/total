@@ -201,7 +201,6 @@
 
         const { createApp, ref, reactive, watch, computed, onMounted } = Vue;
 
-
         //原始資料
         const loadTableData = () => {
             return JSON.parse(localStorage.getItem('tableData')) || [
@@ -231,28 +230,31 @@
                 });
 
 
-                // 初始化時從 localStorage 加載 headers
+                //初始化時從 localStorage 加載 headers
                 const savedHeaders = JSON.parse(localStorage.getItem('headers'));
+                //合併目前的 headers 物件中
                 if (savedHeaders) {
                     Object.assign(headers, savedHeaders);
                 }
 
-                // 監聽 headers 的變化並儲存到 localStorage
+                //監聽 headers 的變化並儲存到 localStorage
                 watch(headers, (newHeaders) => {
                     localStorage.setItem('headers', JSON.stringify(newHeaders));
-                }, { deep: true });
+                }, { deep: true });//深拷貝
 
-                // 監聽 tableData 的變化並儲存到 localStorage
+                //監聽 tableData 的變化並儲存到 localStorage
                 watch(tableData, (newTableData) => {
                     localStorage.setItem('tableData', JSON.stringify(newTableData));
                 });
 
-                //連動 要不要顯示
+                //編輯模式
                 const isEditing = ref(false);
 
+                //編輯日期按鈕
                 const toggleEdit = () => {
                     isEditing.value = !isEditing.value;
                 };
+
                 //按鈕文字
                 const buttonText = computed(() => {
                     return isEditing.value ? "儲存" : "修改日期";
@@ -263,12 +265,12 @@
                     return row['week1'] + row['week2'] + row['week3'] + row['week4'] + row['week5'];
                 };
 
-                //計算欄位總和
+                //計算欄位總和||橫的
                 const columnTotal = (column) => {
                     return tableData.reduce((sum, row) => sum + row[column], 0);
                 };
 
-                //計算總和
+                //計算總和||直的
                 const overallTotal = computed(() => {
                     return tableData.reduce((sum, row) => sum + rowTotal(row), 0);
                 });
@@ -279,10 +281,12 @@
                         row[column] = 0;
                     });
                 };
+
                 //新增欄位
                 const addRow = () => {
                     tableData.push({ name: '新姓名', 'week1': 0, 'week2': 0, 'week3': 0, 'week4': 0, 'week5': 0 });
                 };
+
                 //刪除欄位
                 const deleteRow = (index) => {
                     tableData.splice(index, 1);
